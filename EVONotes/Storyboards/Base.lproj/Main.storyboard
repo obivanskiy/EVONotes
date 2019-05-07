@@ -41,7 +41,7 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="RPs-ok-FZ4" firstAttribute="top" secondItem="uf5-Vn-kuc" secondAttribute="bottom" constant="22.5" id="HwM-D6-IPu"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="RPs-ok-FZ4" secondAttribute="bottom" constant="9.5" id="Pej-Ph-zgm"/>
+                                        <constraint firstAttribute="bottom" secondItem="RPs-ok-FZ4" secondAttribute="bottom" constant="9.5" id="Pej-Ph-zgm"/>
                                         <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="RPs-ok-FZ4" secondAttribute="trailing" constant="282" id="WlV-m2-fvq"/>
                                         <constraint firstItem="uf5-Vn-kuc" firstAttribute="leading" secondItem="ZM8-JX-eSU" secondAttribute="leadingMargin" id="bN1-Tf-s1z"/>
                                         <constraint firstItem="uf5-Vn-kuc" firstAttribute="trailing" secondItem="ZM8-JX-eSU" secondAttribute="trailingMargin" id="fPs-xA-cG6"/>

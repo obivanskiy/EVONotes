@@ -43,6 +43,19 @@ class NoteDetailViewController: UIViewController {
     }
     
     func updateNote() {
+        
+        note.setValue(self.noteTextView.text, forKey: "noteText")
+        note.setValue(Date(), forKey: "date")
+        
+        do {
+            try managedObjectContext.save()
+        } catch let error as NSError{
+            print("Update of the value has failed \(error.description)")
+        }
+        
+    }
+    
+    func createNewNote() {
         let noteEntity = NSEntityDescription.entity(forEntityName: "Note", in: self.managedObjectContext)!
         let noteObject = NSManagedObject(entity: noteEntity, insertInto: self.managedObjectContext)
         
@@ -54,10 +67,7 @@ class NoteDetailViewController: UIViewController {
         } catch let error as NSError {
             print("Couldn't save an object \(error.description)")
         }
-    }
-    
-    func createNewNote() {
-        
+
     }
 
 }

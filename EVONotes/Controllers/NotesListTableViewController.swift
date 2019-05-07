@@ -60,8 +60,39 @@ class NotesListTableViewController: UITableViewController {
         }
         let note = notes[indexPath.row]
         
-        cell.textLabel?.text = note.value(forKey: "noteText") as? String
-        cell.noteDate.text = note.value(forKey: "date") as! String        
+        cell.noteTextPreview.text = note.value(forKey: "noteText") as? String
+        cell.noteDate.text = note.value(forKey: "date") as? String
         return cell
+    }
+    
+    //MARK: - TableView Delegate
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.tableView.deselectRow(at: indexPath, animated: true)
+        let note = notes[indexPath.row]
+        self.performSegue(withIdentifier: editNoteSegueID, sender: note)
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let note = notes[indexPath.row]
+            self.managedObjectContexs.delete(note)
+            self.notes.remove(at: indexPath.row)
+            
+            self.tableView.reloadData()
+        }
+    }
+    
+    //MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == editNoteSegueID {
+            let detailViewController = segue.destination as! NoteDetailViewController
+            detailViewController.note = sender as? NSManagedObject
+        }
     }
 }

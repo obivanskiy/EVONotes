@@ -13,14 +13,17 @@ class NoteDetailViewController: UIViewController {
     
     var managedObjectContext: NSManagedObjectContext!
     var note: NSManagedObject!
-    
+    var date: Date!
 
     @IBOutlet weak var doneButton: UIBarButtonItem!
-    @IBOutlet weak var noteDetailDate: UILabel!
     @IBOutlet weak var noteTextView: UITextView!
+    var viewElementIsEnabled = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        controlUIElements()
+        noteTextView.isUserInteractionEnabled = viewElementIsEnabled
+        self.date = Date()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         managedObjectContext = appDelegate.persistentContainer.viewContext
         
@@ -43,16 +46,20 @@ class NoteDetailViewController: UIViewController {
     }
     
     func updateNote() {
-        
+        let noteDateUpdated = Date()
         note.setValue(self.noteTextView.text, forKey: "noteText")
-        note.setValue(Date(), forKey: "date")
+        note.setValue(noteDateUpdated, forKey: "date")
         
         do {
             try managedObjectContext.save()
         } catch let error as NSError{
             print("Update of the value has failed \(error.description)")
         }
-        
+    }
+    
+    func controlUIElements() {
+        noteTextView.isUserInteractionEnabled = viewElementIsEnabled
+        doneButton.isEnabled = viewElementIsEnabled
     }
     
     func createNewNote() {
@@ -60,14 +67,12 @@ class NoteDetailViewController: UIViewController {
         let noteObject = NSManagedObject(entity: noteEntity, insertInto: self.managedObjectContext)
         
         noteObject.setValue(self.noteTextView.text, forKey: "noteText")
-        noteObject.setValue(Date(), forKey: "date")
+        noteObject.setValue(self.date, forKey: "date")
         
         do {
             try managedObjectContext.save()
         } catch let error as NSError {
             print("Couldn't save an object \(error.description)")
         }
-
     }
-
 }

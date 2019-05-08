@@ -9,15 +9,20 @@
 import UIKit
 import CoreData
 
-class NotesListTableViewController: UITableViewController {
+class NotesListTableViewController: UITableViewController, UISearchBarDelegate {
+    
+    @IBOutlet weak var noteSearchBar: UISearchBar!
     
     private let noteDetailSegueID: String = "NoteDetail"
     private let addNoteSegueID: String = "AddNote"
     private let editnoteSegueID: String = "EditNote"
     let colorPicker = ColorPicker()
     
+    var isSearching = false
+    
     var managedObjectContexs: NSManagedObjectContext!
     var notes: [Note]!
+    var filteredNotes = [Note]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +34,17 @@ class NotesListTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.fetchNotes()
+        setUpSearchBar()
     }
+    
+    func setUpSearchBar() {
+        noteSearchBar.delegate = self
+        noteSearchBar.barStyle = .blackOpaque
+        noteSearchBar.returnKeyType = UIReturnKeyType.done
+        noteSearchBar.placeholder = "Search for your note"
+        filteredNotes = notes
+    }
+    
     
     func fetchNotes() {
         let notesRequest = NSFetchRequest<Note>(entityName: "Note")
@@ -54,6 +69,10 @@ class NotesListTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isSearching == true {
+            return filteredNotes.count
+        }
+        
         return self.notes.count
     }
     
@@ -61,7 +80,13 @@ class NotesListTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NoteTableViewCell.identifier, for: indexPath) as? NoteTableViewCell else {
             return UITableViewCell()
         }
-        let note = notes[indexPath.row]
+        var note: Note
+        
+        if isSearching{
+            note = filteredNotes[indexPath.row]
+        } else {
+            note = notes[indexPath.row]
+        }
         
         cell.noteTextPreview.text = note.noteText
         cell.noteDate.text = note.date?.formatDate()
@@ -99,7 +124,7 @@ class NotesListTableViewController: UITableViewController {
         deleteAction.backgroundColor = colorPicker.colorPicker(r: 255, g: 76, b: 0)
         
         let shareAction = UITableViewRowAction(style: .normal, title: "Share") { (rowAction, indexPath) in
-            let activityController = UIActivityViewController(activityItems: [note.noteText], applicationActivities: nil)
+            let activityController = UIActivityViewController(activityItems: [note.noteText ?? ""], applicationActivities: nil)
             self.present(activityController, animated: true, completion: nil)
         }
         shareAction.backgroundColor = colorPicker.colorPicker(r: 0, g: 234, b: 97)
@@ -107,9 +132,35 @@ class NotesListTableViewController: UITableViewController {
         return [deleteAction ,editAction, shareAction]
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .delete {
-//        }
+    //MARK: - Search Bar Delegate
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+
+        if searchBar.text == nil || searchBar.text == "" {
+            isSearching = false
+            view.endEditing(true)
+            tableView.reloadData()
+        } else {
+            isSearching = true
+            filteredNotes = notes.filter({ (note) -> Bool in
+                guard let text = searchBar.text else {
+                    return false
+                }
+                return (note.noteText?.contains(text))!
+            })
+        }
+        tableView.reloadData()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+        self.view.endEditing(true)
+        searchBar.showsCancelButton = false
     }
     
     //MARK: - Navigation

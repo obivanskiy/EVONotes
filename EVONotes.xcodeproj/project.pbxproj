@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		153EFD542282D73C0077CC41 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153EFD532282D73C0077CC41 /* ColorPicker.swift */; };
-		153EFD562282F7AE0077CC41 /* RowAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153EFD552282F7AE0077CC41 /* RowAction.swift */; };
 		159BFBFD2280BD4000D275A3 /* UILabel+CellIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159BFBFC2280BD4000D275A3 /* UILabel+CellIdentifier.swift */; };
 		15E5E879228049380017521D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E5E878228049380017521D /* AppDelegate.swift */; };
 		15E5E87E228049380017521D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15E5E87C228049380017521D /* Main.storyboard */; };
@@ -25,7 +24,6 @@
 
 /* Begin PBXFileReference section */
 		153EFD532282D73C0077CC41 /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
-		153EFD552282F7AE0077CC41 /* RowAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowAction.swift; sourceTree = "<group>"; };
 		159BFBFC2280BD4000D275A3 /* UILabel+CellIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+CellIdentifier.swift"; sourceTree = "<group>"; };
 		15E5E875228049380017521D /* EVONotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EVONotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15E5E878228049380017521D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -65,7 +63,7 @@
 		153EFD572282F7B20077CC41 /* SupportingClasses */ = {
 			isa = PBXGroup;
 			children = (
-				153EFD552282F7AE0077CC41 /* RowAction.swift */,
+				153EFD532282D73C0077CC41 /* ColorPicker.swift */,
 			);
 			path = SupportingClasses;
 			sourceTree = "<group>";
@@ -98,7 +96,6 @@
 		15E5E877228049380017521D /* EVONotes */ = {
 			isa = PBXGroup;
 			children = (
-				153EFD532282D73C0077CC41 /* ColorPicker.swift */,
 				15E5E878228049380017521D /* AppDelegate.swift */,
 				15E5E89322804E350017521D /* Storyboards */,
 				153EFD572282F7B20077CC41 /* SupportingClasses */,
@@ -218,7 +215,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				153EFD562282F7AE0077CC41 /* RowAction.swift in Sources */,
 				15E5E8982280B9E30017521D /* Date+Formatter.swift in Sources */,
 				15E5E89C2280BB580017521D /* Note+CoreDataProperties.swift in Sources */,
 				15E5E89B2280BB580017521D /* Note+CoreDataClass.swift in Sources */,

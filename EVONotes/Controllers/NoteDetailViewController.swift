@@ -21,7 +21,7 @@ class NoteDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        controlUIElements()
+        controlUIElements() 
         noteTextView.isUserInteractionEnabled = viewElementIsEnabled
         self.date = Date()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

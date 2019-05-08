@@ -77,6 +77,7 @@
                     </navigationItem>
                     <connections>
                         <segue destination="MAH-RB-t1z" kind="show" identifier="NoteDetail" id="Rwu-bm-BYd"/>
+                        <segue destination="MAH-RB-t1z" kind="show" identifier="EditNote" id="Cqd-kb-bpK"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5uf-U7-dtj" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -148,6 +149,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Rwu-bm-BYd"/>
+        <segue reference="Cqd-kb-bpK"/>
     </inferredMetricsTieBreakers>
 </document>

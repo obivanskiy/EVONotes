@@ -83,36 +83,46 @@ class NotesListTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let note = self.notes[indexPath.row]
+        
         let editAction = UITableViewRowAction(style: .normal, title: "Edit note") { (rowAction, indexPath) in
-            print("Edit \(self.notes[indexPath.row])")
+            self.performSegue(withIdentifier: self.editnoteSegueID, sender: note)
         }
         editAction.backgroundColor = colorPicker.colorPicker(r: 0, g: 235, b: 239)
         
         let deleteAction = UITableViewRowAction(style: .normal, title: "Delete") { (rowAction, indexPath) in
-            print("delete note for \(self.notes[indexPath.row])")
+            self.managedObjectContexs.delete(note)
+            self.notes.remove(at: indexPath.row)
+            
+            self.tableView.reloadData()
         }
         deleteAction.backgroundColor = colorPicker.colorPicker(r: 255, g: 76, b: 0)
         
-        return [deleteAction ,editAction]
+        let shareAction = UITableViewRowAction(style: .normal, title: "Share") { (rowAction, indexPath) in
+            let activityController = UIActivityViewController(activityItems: [note.noteText], applicationActivities: nil)
+            self.present(activityController, animated: true, completion: nil)
+        }
+        shareAction.backgroundColor = colorPicker.colorPicker(r: 0, g: 234, b: 97)
+        
+        return [deleteAction ,editAction, shareAction]
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 //        if editingStyle == .delete {
-//            let note = notes[indexPath.row]
-//            self.managedObjectContexs.delete(note)
-//            self.notes.remove(at: indexPath.row)
-//
-//            self.tableView.reloadData()
 //        }
     }
     
     //MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == noteDetailSegueID {
-            let detailViewController = segue.destination as! NoteDetailViewController
-            detailViewController.note = sender as? NSManagedObject
+        let detailViewController = segue.destination as! NoteDetailViewController
+        detailViewController.note = sender as? NSManagedObject
+        if segue.identifier == addNoteSegueID {
+            detailViewController.navigationItem.title = "Create new note"
+        } else if segue.identifier == noteDetailSegueID  {
             detailViewController.viewElementIsEnabled = false
+        } else if segue.identifier == editnoteSegueID {
+            detailViewController.navigationItem.title = "Edit your EVONote"
         }
     }
 }

@@ -45,9 +45,26 @@ class NotesListTableViewController: UITableViewController, UISearchBarDelegate {
         filteredNotes = notes
     }
     
-    
+    //MARK: - Fetch notes entity
     func fetchNotes() {
         let notesRequest = NSFetchRequest<Note>(entityName: "Note")
+
+        do {
+            let noteObjects = try self.managedObjectContexs.fetch(notesRequest)
+            self.notes = noteObjects
+        } catch let error as NSError {
+            print("Could not fetch notes: \(error), \(error.userInfo )")
+        }
+        
+        self.tableView.reloadData()
+    }
+    
+    //MARK: - function for fetching sorted entity using NSSortDescriptor
+    func sortNotes(for key: String?, isAccending: Bool) {
+        let notesRequest = NSFetchRequest<Note>(entityName: "Note")
+        
+        let descriptor = NSSortDescriptor(key: key, ascending: isAccending)
+        notesRequest.sortDescriptors = [descriptor]
         
         do {
             let noteObjects = try self.managedObjectContexs.fetch(notesRequest)
@@ -63,7 +80,49 @@ class NotesListTableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     @IBAction func sortNotesPressed(_ sender: Any) {
+        let sortMenuAlert = UIAlertController(title: "Sort your notes", message: nil, preferredStyle: .actionSheet)
         
+        let sortByName = UIAlertAction(title: "Sort by name", style: .default) { (_) in
+            let nameSortAlert = UIAlertController(title: "Sort by name", message: nil, preferredStyle: .actionSheet)
+            
+            let accending = UIAlertAction(title: "Accending", style: .default, handler: { (_) in
+                self.sortNotes(for: "noteText", isAccending: true)
+            })
+            let decending = UIAlertAction(title: "Decending", style: .default, handler: { (_) in
+                self.sortNotes(for: "noteText", isAccending: false)
+            })
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            nameSortAlert.addAction(accending)
+            nameSortAlert.addAction(decending)
+            nameSortAlert.addAction(cancelAction)
+            
+            self.present(nameSortAlert, animated: true, completion: nil)
+        }
+        
+        let sortByDate = UIAlertAction(title: "Sort by date", style: .default) { (_) in
+            let dateSortAlert = UIAlertController(title: "Sort by name", message: nil, preferredStyle: .actionSheet)
+            
+            let accending = UIAlertAction(title: "Accending", style: .default, handler: { (_) in
+                self.sortNotes(for: "date", isAccending: true)
+            })
+            let decending = UIAlertAction(title: "Decending", style: .default, handler: { (_) in
+                self.sortNotes(for: "date", isAccending: false)
+            })
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            dateSortAlert.addAction(accending)
+            dateSortAlert.addAction(decending)
+            dateSortAlert.addAction(cancelAction)
+            
+            self.present(dateSortAlert, animated: true, completion: nil)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        sortMenuAlert.addAction(sortByName)
+        sortMenuAlert.addAction(sortByDate)
+        sortMenuAlert.addAction(cancelAction)
+        present(sortMenuAlert, animated: true, completion: nil)
     }
     
     // MARK: - Table view data source
@@ -84,12 +143,14 @@ class NotesListTableViewController: UITableViewController, UISearchBarDelegate {
         
         if isSearching{
             note = filteredNotes[indexPath.row]
+            tableView.reloadData()
         } else {
             note = notes[indexPath.row]
         }
         
         cell.noteTextPreview.text = note.noteText
         cell.noteDate.text = note.date?.formatDate()
+        cell.layer.cornerRadius = 5
         return cell
     }
     

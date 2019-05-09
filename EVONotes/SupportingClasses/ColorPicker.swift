@@ -8,7 +8,7 @@
 
 import UIKit
 
-
+//Color picker structure for making custom UIColor objects
 struct ColorPicker {
     func colorPicker(r: CGFloat, g: CGFloat, b: CGFloat) -> UIColor {
         let myColor = UIColor(displayP3Red: r/255, green: g/255, blue: b/255, alpha: 1.0)

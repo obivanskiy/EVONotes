@@ -9,20 +9,20 @@
 import UIKit
 import CoreData
 
-class NotesListTableViewController: UITableViewController, UISearchBarDelegate {
+class NotesListTableViewController: UITableViewController {
     
     @IBOutlet weak var noteSearchBar: UISearchBar!
     
     private let noteDetailSegueID: String = "NoteDetail"
     private let addNoteSegueID: String = "AddNote"
     private let editnoteSegueID: String = "EditNote"
-    let colorPicker = ColorPicker()
     
-    var isSearching = false
+    let colorPicker = ColorPicker()
     
     var managedObjectContexs: NSManagedObjectContext!
     var notes: [Note]!
     var filteredNotes = [Note]()
+    private let isFiltered = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,8 +33,9 @@ class NotesListTableViewController: UITableViewController, UISearchBarDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        self.fetchNotes()
+        fetchNotes()
         setUpSearchBar()
+        refresh()
     }
     
     func setUpSearchBar() {
@@ -50,8 +51,7 @@ class NotesListTableViewController: UITableViewController, UISearchBarDelegate {
         let notesRequest = NSFetchRequest<Note>(entityName: "Note")
 
         do {
-            let noteObjects = try self.managedObjectContexs.fetch(notesRequest)
-            self.notes = noteObjects
+            self.notes = try self.managedObjectContexs.fetch(notesRequest)
         } catch let error as NSError {
             print("Could not fetch notes: \(error), \(error.userInfo )")
         }
@@ -67,12 +67,20 @@ class NotesListTableViewController: UITableViewController, UISearchBarDelegate {
         notesRequest.sortDescriptors = [descriptor]
         
         do {
-            let noteObjects = try self.managedObjectContexs.fetch(notesRequest)
-            self.notes = noteObjects
+            self.notes = try self.managedObjectContexs.fetch(notesRequest)
         } catch let error as NSError {
             print("Could not fetch notes: \(error), \(error.userInfo )")
         }
         self.tableView.reloadData()
+    }
+    
+    //MARK: - refresh notes entity
+    func refresh() {
+        do{
+            notes = try managedObjectContexs.fetch(Note.fetchRequest())
+        } catch let error as NSError {
+            print("Failed refresh \(error), \(error.userInfo)")
+        }
     }
     
     @IBAction func addNotePressed(_ sender: Any) {
@@ -128,10 +136,6 @@ class NotesListTableViewController: UITableViewController, UISearchBarDelegate {
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isSearching == true {
-            return filteredNotes.count
-        }
-        
         return self.notes.count
     }
     
@@ -139,14 +143,7 @@ class NotesListTableViewController: UITableViewController, UISearchBarDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NoteTableViewCell.identifier, for: indexPath) as? NoteTableViewCell else {
             return UITableViewCell()
         }
-        var note: Note
-        
-        if isSearching{
-            note = filteredNotes[indexPath.row]
-            tableView.reloadData()
-        } else {
-            note = notes[indexPath.row]
-        }
+        let note = notes[indexPath.row]
         
         cell.noteTextPreview.text = note.noteText
         cell.noteDate.text = note.date?.formatDate()
@@ -193,37 +190,6 @@ class NotesListTableViewController: UITableViewController, UISearchBarDelegate {
         return [deleteAction ,editAction, shareAction]
     }
     
-    //MARK: - Search Bar Delegate
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-
-        if searchBar.text == nil || searchBar.text == "" {
-            isSearching = false
-            view.endEditing(true)
-            tableView.reloadData()
-        } else {
-            isSearching = true
-            filteredNotes = notes.filter({ (note) -> Bool in
-                guard let text = searchBar.text else {
-                    return false
-                }
-                return (note.noteText?.contains(text))!
-            })
-        }
-        tableView.reloadData()
-    }
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.showsCancelButton = true
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = ""
-        searchBar.resignFirstResponder()
-        self.view.endEditing(true)
-        searchBar.showsCancelButton = false
-    }
-    
     //MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -236,5 +202,35 @@ class NotesListTableViewController: UITableViewController, UISearchBarDelegate {
         } else if segue.identifier == editnoteSegueID {
             detailViewController.navigationItem.title = "Edit your EVONote"
         }
+    }
+}
+
+extension NotesListTableViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        searchBar.showsCancelButton = true
+        
+        guard let input = noteSearchBar.text else {
+            return
+        }
+        
+        let request = Note.fetchRequest() as NSFetchRequest<Note>
+        request.predicate = NSPredicate(format: "noteText CONTAINS %@", input)
+        
+        do {
+            self.notes = try self.managedObjectContexs.fetch(request)
+        } catch let error as NSError {
+            print("Search failed \(error), \(error.userInfo)")
+        }
+        searchBar.resignFirstResponder()
+        tableView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        refresh()
+        searchBar.text = nil
+        searchBar.resignFirstResponder()
+        tableView.reloadData()
     }
 }

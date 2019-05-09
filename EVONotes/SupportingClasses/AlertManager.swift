@@ -8,6 +8,8 @@
 
 import UIKit
 
+//MARK: - Finish alert manager
+
 struct AlertManager {
     
     enum NotesAlert {

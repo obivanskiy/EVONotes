@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+let colorPicker = ColorPicker()
+
 final class NotesListTableViewController: UITableViewController {
     
     @IBOutlet weak var noteSearchBar: UISearchBar!
@@ -20,8 +22,6 @@ final class NotesListTableViewController: UITableViewController {
     private var notes: [Note]!
     private var filteredNotes = [Note]()
 
-    let colorPicker = ColorPicker()
-    
     // MARK: - ViewController lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -209,7 +209,7 @@ extension NotesListTableViewController: UISearchBarDelegate {
         filteredNotes = notes
     }
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchBar.showsCancelButton = true
         
         guard let input = noteSearchBar.text else {
@@ -223,13 +223,13 @@ extension NotesListTableViewController: UISearchBarDelegate {
         } catch let error as NSError {
             print("Search failed \(error), \(error.userInfo)")
         }
-        searchBar.resignFirstResponder()
         tableView.reloadData()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         refresh()
         searchBar.text = nil
+        searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
         tableView.reloadData()
     }

@@ -11,10 +11,15 @@ import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        let navigationTintColor = colorPicker.colorPicker(r: 0, g: 214, b: 71)
+        UINavigationBar.appearance().tintColor = navigationTintColor
+        UINavigationBar.appearance().barTintColor = colorPicker.colorPicker(r: 0, g: 0, b: 0)
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor : navigationTintColor]
+        
         return true
     }
 

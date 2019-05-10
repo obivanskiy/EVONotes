@@ -13,6 +13,8 @@ final class NoteDetailViewController: UIViewController {
     
     private var managedObjectContext: NSManagedObjectContext!
     private var date: Date!
+    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    
     var viewElementIsEnabled = true
     var note: NSManagedObject!
 
@@ -22,17 +24,11 @@ final class NoteDetailViewController: UIViewController {
     // MARK: - ViewController lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        controlUIElements() 
-        noteTextView.isUserInteractionEnabled = viewElementIsEnabled
+        controlUIElements()
         self.date = Date()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         managedObjectContext = appDelegate.persistentContainer.viewContext
-        
-        if note != nil {
-            self.noteTextView.text = note.value(forKey: "noteText") as? String
-        } else {
-            self.noteTextView.text = ""
-        }
+        checkTextField()
+        self.hideKeyboardWhenTappedAround()
     }
     
     @IBAction func donePressed(_ sender: Any) {
@@ -46,7 +42,7 @@ final class NoteDetailViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    func updateNote() {
+    private func updateNote() {
         let noteDateUpdated = Date()
         note.setValue(self.noteTextView.text, forKey: "noteText")
         note.setValue(noteDateUpdated, forKey: "date")
@@ -58,12 +54,20 @@ final class NoteDetailViewController: UIViewController {
         }
     }
     
-    func controlUIElements() {
+    private func checkTextField() {
+        if note != nil {
+            self.noteTextView.text = note.value(forKey: "noteText") as? String
+        } else {
+            self.noteTextView.text = ""
+        }
+    }
+    
+    private func controlUIElements() {
         noteTextView.isUserInteractionEnabled = viewElementIsEnabled
         doneButton.isEnabled = viewElementIsEnabled
     }
     
-    func createNewNote() {
+    private func createNewNote() {
         let noteEntity = NSEntityDescription.entity(forEntityName: "Note", in: self.managedObjectContext)!
         let noteObject = NSManagedObject(entity: noteEntity, insertInto: self.managedObjectContext)
         

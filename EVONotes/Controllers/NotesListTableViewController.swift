@@ -28,6 +28,7 @@ final class NotesListTableViewController: UITableViewController {
         navigationItem.title = "EVONotes"
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         managedObjectContexs = appDelegate.persistentContainer.viewContext
+        self.hideKeyboardWhenTappedAround()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -199,7 +200,6 @@ final class NotesListTableViewController: UITableViewController {
 }
 
 //MARK: - SearchBar extension
-
 extension NotesListTableViewController: UISearchBarDelegate {
     func setUpSearchBar() {
         noteSearchBar.delegate = self

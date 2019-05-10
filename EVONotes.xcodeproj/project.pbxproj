@@ -20,7 +20,6 @@
 		15E5E8982280B9E30017521D /* Date+Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E5E8972280B9E30017521D /* Date+Formatter.swift */; };
 		15E5E89B2280BB580017521D /* Note+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E5E8992280BB580017521D /* Note+CoreDataClass.swift */; };
 		15E5E89C2280BB580017521D /* Note+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E5E89A2280BB580017521D /* Note+CoreDataProperties.swift */; };
-		15FB970A2285CBDE0079B71F /* UIViewController+DismissKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FB97092285CBDE0079B71F /* UIViewController+DismissKeyboard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,7 +38,6 @@
 		15E5E8972280B9E30017521D /* Date+Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Formatter.swift"; sourceTree = "<group>"; };
 		15E5E8992280BB580017521D /* Note+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataClass.swift"; sourceTree = "<group>"; };
 		15E5E89A2280BB580017521D /* Note+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		15FB97092285CBDE0079B71F /* UIViewController+DismissKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+DismissKeyboard.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +71,6 @@
 		159BFBFE2280BD4600D275A3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				15FB97092285CBDE0079B71F /* UIViewController+DismissKeyboard.swift */,
 				159BFBFC2280BD4000D275A3 /* UILabel+CellIdentifier.swift */,
 				15E5E8972280B9E30017521D /* Date+Formatter.swift */,
 			);
@@ -222,7 +219,6 @@
 				15E5E89C2280BB580017521D /* Note+CoreDataProperties.swift in Sources */,
 				15E5E89B2280BB580017521D /* Note+CoreDataClass.swift in Sources */,
 				15E5E89022804E110017521D /* NoteDetailViewController.swift in Sources */,
-				15FB970A2285CBDE0079B71F /* UIViewController+DismissKeyboard.swift in Sources */,
 				15E5E881228049380017521D /* EVONotes.xcdatamodeld in Sources */,
 				153EFD542282D73C0077CC41 /* ColorPicker.swift in Sources */,
 				159BFBFD2280BD4000D275A3 /* UILabel+CellIdentifier.swift in Sources */,

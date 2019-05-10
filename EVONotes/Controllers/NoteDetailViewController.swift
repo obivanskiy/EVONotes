@@ -9,16 +9,17 @@
 import UIKit
 import CoreData
 
-class NoteDetailViewController: UIViewController {
+final class NoteDetailViewController: UIViewController {
     
-    var managedObjectContext: NSManagedObjectContext!
+    private var managedObjectContext: NSManagedObjectContext!
+    private var date: Date!
+    var viewElementIsEnabled = true
     var note: NSManagedObject!
-    var date: Date!
 
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var noteTextView: UITextView!
-    var viewElementIsEnabled = true
     
+    // MARK: - ViewController lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
         controlUIElements() 

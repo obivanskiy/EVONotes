@@ -9,21 +9,20 @@
 import UIKit
 import CoreData
 
-class NotesListTableViewController: UITableViewController {
+final class NotesListTableViewController: UITableViewController {
     
     @IBOutlet weak var noteSearchBar: UISearchBar!
     
     private let noteDetailSegueID: String = "NoteDetail"
     private let addNoteSegueID: String = "AddNote"
     private let editnoteSegueID: String = "EditNote"
-    
+    private var managedObjectContexs: NSManagedObjectContext!
+    private var notes: [Note]!
+    private var filteredNotes = [Note]()
+
     let colorPicker = ColorPicker()
     
-    var managedObjectContexs: NSManagedObjectContext!
-    var notes: [Note]!
-    var filteredNotes = [Note]()
-    private let isFiltered = false
-    
+    // MARK: - ViewController lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "EVONotes"
@@ -38,16 +37,8 @@ class NotesListTableViewController: UITableViewController {
         refresh()
     }
     
-    func setUpSearchBar() {
-        noteSearchBar.delegate = self
-        noteSearchBar.barStyle = .blackOpaque
-        noteSearchBar.returnKeyType = UIReturnKeyType.done
-        noteSearchBar.placeholder = "Search for your note"
-        filteredNotes = notes
-    }
-    
     //MARK: - Fetch notes entity
-    func fetchNotes() {
+    final func fetchNotes() {
         let notesRequest = NSFetchRequest<Note>(entityName: "Note")
 
         do {
@@ -55,13 +46,15 @@ class NotesListTableViewController: UITableViewController {
         } catch let error as NSError {
             print("Could not fetch notes: \(error), \(error.userInfo )")
         }
-        
         self.tableView.reloadData()
     }
     
     //MARK: - function for fetching sorted entity using NSSortDescriptor
-    func sortNotes(for key: String?, isAccending: Bool) {
+    final func sortNotes(for key: String?, isAccending: Bool) {
         let notesRequest = NSFetchRequest<Note>(entityName: "Note")
+        
+        notesRequest.fetchBatchSize = 5
+        notesRequest.fetchOffset = 5
         
         let descriptor = NSSortDescriptor(key: key, ascending: isAccending)
         notesRequest.sortDescriptors = [descriptor]
@@ -75,7 +68,7 @@ class NotesListTableViewController: UITableViewController {
     }
     
     //MARK: - refresh notes entity
-    func refresh() {
+    final func refresh() {
         do{
             notes = try managedObjectContexs.fetch(Note.fetchRequest())
         } catch let error as NSError {
@@ -130,6 +123,7 @@ class NotesListTableViewController: UITableViewController {
         sortMenuAlert.addAction(sortByName)
         sortMenuAlert.addAction(sortByDate)
         sortMenuAlert.addAction(cancelAction)
+        
         present(sortMenuAlert, animated: true, completion: nil)
     }
     
@@ -156,7 +150,6 @@ class NotesListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView.deselectRow(at: indexPath, animated: true)
         let note = notes[indexPath.row]
-
         
         self.performSegue(withIdentifier: noteDetailSegueID, sender: note)
     }
@@ -205,16 +198,23 @@ class NotesListTableViewController: UITableViewController {
     }
 }
 
+//MARK: - SearchBar extension
+
 extension NotesListTableViewController: UISearchBarDelegate {
+    func setUpSearchBar() {
+        noteSearchBar.delegate = self
+        noteSearchBar.barStyle = .blackOpaque
+        noteSearchBar.returnKeyType = UIReturnKeyType.done
+        noteSearchBar.placeholder = "Search for your note"
+        filteredNotes = notes
+    }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
         searchBar.showsCancelButton = true
         
         guard let input = noteSearchBar.text else {
             return
         }
-        
         let request = Note.fetchRequest() as NSFetchRequest<Note>
         request.predicate = NSPredicate(format: "noteText CONTAINS %@", input)
         

@@ -9,23 +9,30 @@
 import UIKit
 import CoreData
 
+let colorPicker = ColorPicker()
+let globalBackgroundColor = colorPicker.colorPicker(r: 45, g: 49, b: 66)
+let globalTintColor = colorPicker.colorPicker(r: 255, g: 255, b: 255)
+
+
 class NotesListTableViewController: UITableViewController {
+    
+    enum SeguesToDetailController: String {
+        case noteDetailSegueID = "NoteDetail"
+        case addNoteSegueID = "AddNote"
+        case editNoteSegueID = "EditNote"
+    }
     
     @IBOutlet weak var noteSearchBar: UISearchBar!
     
-    private let noteDetailSegueID: String = "NoteDetail"
-    private let addNoteSegueID: String = "AddNote"
-    private let editnoteSegueID: String = "EditNote"
-    
-    let colorPicker = ColorPicker()
-    
-    var managedObjectContexs: NSManagedObjectContext!
-    var notes: [Note]!
-    var filteredNotes = [Note]()
-    private let isFiltered = false
+    private var managedObjectContexs: NSManagedObjectContext!
+    private var notes: [Note]!
+    private var filteredNotes = [Note]()
+
+    private(set) var isFiltered = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.backgroundColor = globalBackgroundColor
         navigationItem.title = "EVONotes"
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         managedObjectContexs = appDelegate.persistentContainer.viewContext
@@ -40,7 +47,7 @@ class NotesListTableViewController: UITableViewController {
     
     func setUpSearchBar() {
         noteSearchBar.delegate = self
-        noteSearchBar.barStyle = .blackOpaque
+        noteSearchBar.backgroundColor = globalBackgroundColor
         noteSearchBar.returnKeyType = UIReturnKeyType.done
         noteSearchBar.placeholder = "Search for your note"
         filteredNotes = notes
@@ -62,6 +69,7 @@ class NotesListTableViewController: UITableViewController {
     //MARK: - function for fetching sorted entity using NSSortDescriptor
     func sortNotes(for key: String?, isAccending: Bool) {
         let notesRequest = NSFetchRequest<Note>(entityName: "Note")
+
         
         let descriptor = NSSortDescriptor(key: key, ascending: isAccending)
         notesRequest.sortDescriptors = [descriptor]
@@ -75,19 +83,22 @@ class NotesListTableViewController: UITableViewController {
     }
     
     //MARK: - refresh notes entity
+    #warning("no completion in method declared, refresh can take much time to refresh even when data is already apears")
     func refresh() {
         do{
             notes = try managedObjectContexs.fetch(Note.fetchRequest())
         } catch let error as NSError {
+            #warning("error is not handled here")
             print("Failed refresh \(error), \(error.userInfo)")
         }
     }
     
     @IBAction func addNotePressed(_ sender: Any) {
-        performSegue(withIdentifier: addNoteSegueID, sender: nil)
+        performSegue(withIdentifier: SeguesToDetailController.addNoteSegueID.rawValue, sender: nil)
     }
     
     @IBAction func sortNotesPressed(_ sender: Any) {
+        #warning("shoud be refactored, method is way too big")
         let sortMenuAlert = UIAlertController(title: "Sort your notes", message: nil, preferredStyle: .actionSheet)
         
         let sortByName = UIAlertAction(title: "Sort by name", style: .default) { (_) in
@@ -153,23 +164,13 @@ class NotesListTableViewController: UITableViewController {
     
     //MARK: - TableView Delegate
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.tableView.deselectRow(at: indexPath, animated: true)
-        let note = notes[indexPath.row]
 
-        
-        self.performSegue(withIdentifier: noteDetailSegueID, sender: note)
-    }
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let note = self.notes[indexPath.row]
         
         let editAction = UITableViewRowAction(style: .normal, title: "Edit note") { (rowAction, indexPath) in
-            self.performSegue(withIdentifier: self.editnoteSegueID, sender: note)
+            self.performSegue(withIdentifier: SeguesToDetailController.editNoteSegueID.rawValue, sender: note)
         }
         editAction.backgroundColor = colorPicker.colorPicker(r: 0, g: 235, b: 239)
         
@@ -190,16 +191,23 @@ class NotesListTableViewController: UITableViewController {
         return [deleteAction ,editAction, shareAction]
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.tableView.deselectRow(at: indexPath, animated: true)
+        let note = notes[indexPath.row]
+        self.performSegue(withIdentifier: SeguesToDetailController.noteDetailSegueID.rawValue, sender: note)
+    }
+    
     //MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let detailViewController = segue.destination as! NoteDetailViewController
         detailViewController.note = sender as? NSManagedObject
-        if segue.identifier == addNoteSegueID {
+
+        if segue.identifier == SeguesToDetailController.addNoteSegueID.rawValue {
             detailViewController.navigationItem.title = "Create new note"
-        } else if segue.identifier == noteDetailSegueID  {
+        } else if segue.identifier == SeguesToDetailController.noteDetailSegueID.rawValue  {
             detailViewController.viewElementIsEnabled = false
-        } else if segue.identifier == editnoteSegueID {
+        } else if segue.identifier == SeguesToDetailController.editNoteSegueID.rawValue {
             detailViewController.navigationItem.title = "Edit your EVONote"
         }
     }
@@ -224,7 +232,10 @@ extension NotesListTableViewController: UISearchBarDelegate {
             print("Search failed \(error), \(error.userInfo)")
         }
         searchBar.resignFirstResponder()
-        tableView.reloadData()
+        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

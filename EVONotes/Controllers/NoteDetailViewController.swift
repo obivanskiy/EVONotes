@@ -58,6 +58,8 @@ class NoteDetailViewController: UIViewController {
     }
     
     func controlUIElements() {
+        noteTextView.backgroundColor = globalBackgroundColor
+        noteTextView.textColor = globalTintColor
         noteTextView.isUserInteractionEnabled = viewElementIsEnabled
         doneButton.isEnabled = viewElementIsEnabled
     }

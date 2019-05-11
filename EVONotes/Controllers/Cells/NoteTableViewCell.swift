@@ -15,7 +15,7 @@ class NoteTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+        self.backgroundColor = colorPicker.colorPicker(r: 31, g: 33, b: 45)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

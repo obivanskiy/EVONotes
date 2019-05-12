@@ -9,11 +9,6 @@
 import UIKit
 import CoreData
 
-let colorPicker = ColorPicker()
-let globalBackgroundColor = colorPicker.colorPicker(r: 45, g: 49, b: 66)
-let globalTintColor = colorPicker.colorPicker(r: 255, g: 255, b: 255)
-
-
 class NotesListTableViewController: UITableViewController {
     
     enum SeguesToDetailController: String {
@@ -164,8 +159,6 @@ class NotesListTableViewController: UITableViewController {
     
     //MARK: - TableView Delegate
     
-
-    
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let note = self.notes[indexPath.row]
         
@@ -203,11 +196,12 @@ class NotesListTableViewController: UITableViewController {
         let detailViewController = segue.destination as! NoteDetailViewController
         detailViewController.note = sender as? NSManagedObject
 
-        if segue.identifier == SeguesToDetailController.addNoteSegueID.rawValue {
+        switch segue.identifier {
+        case SeguesToDetailController.addNoteSegueID.rawValue:
             detailViewController.navigationItem.title = "Create new note"
-        } else if segue.identifier == SeguesToDetailController.noteDetailSegueID.rawValue  {
+        case SeguesToDetailController.noteDetailSegueID.rawValue:
             detailViewController.viewElementIsEnabled = false
-        } else if segue.identifier == SeguesToDetailController.editNoteSegueID.rawValue {
+        default:
             detailViewController.navigationItem.title = "Edit your EVONote"
         }
     }

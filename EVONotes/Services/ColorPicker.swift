@@ -8,6 +8,11 @@
 
 import UIKit
 
+// global color properties
+let colorPicker = ColorPicker()
+let globalBackgroundColor = colorPicker.colorPicker(r: 45, g: 49, b: 66)
+let globalTintColor = colorPicker.colorPicker(r: 255, g: 255, b: 255)
+
 //Color picker structure for making custom UIColor objects
 struct ColorPicker {
     func colorPicker(r: CGFloat, g: CGFloat, b: CGFloat) -> UIColor {

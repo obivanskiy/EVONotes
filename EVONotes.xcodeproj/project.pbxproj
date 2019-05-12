@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		153EFD542282D73C0077CC41 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153EFD532282D73C0077CC41 /* ColorPicker.swift */; };
 		159BFBFD2280BD4000D275A3 /* UILabel+CellIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159BFBFC2280BD4000D275A3 /* UILabel+CellIdentifier.swift */; };
-		15E5BB0722888D3E00F0EA7E /* CoreDataServiceInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E5BB0622888D3E00F0EA7E /* CoreDataServiceInterface.swift */; };
-		15E5BB0922888E8500F0EA7E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E5BB0822888E8500F0EA7E /* CoreDataManager.swift */; };
 		15E5E879228049380017521D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E5E878228049380017521D /* AppDelegate.swift */; };
 		15E5E87E228049380017521D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15E5E87C228049380017521D /* Main.storyboard */; };
 		15E5E881228049380017521D /* EVONotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 15E5E87F228049380017521D /* EVONotes.xcdatamodeld */; };
@@ -27,8 +25,6 @@
 /* Begin PBXFileReference section */
 		153EFD532282D73C0077CC41 /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
 		159BFBFC2280BD4000D275A3 /* UILabel+CellIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+CellIdentifier.swift"; sourceTree = "<group>"; };
-		15E5BB0622888D3E00F0EA7E /* CoreDataServiceInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataServiceInterface.swift; sourceTree = "<group>"; };
-		15E5BB0822888E8500F0EA7E /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		15E5E875228049380017521D /* EVONotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EVONotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15E5E878228049380017521D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		15E5E87D228049380017521D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -125,8 +121,6 @@
 		15E5E89222804E220017521D /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				15E5BB0622888D3E00F0EA7E /* CoreDataServiceInterface.swift */,
-				15E5BB0822888E8500F0EA7E /* CoreDataManager.swift */,
 				15E5E87F228049380017521D /* EVONotes.xcdatamodeld */,
 				152190F02280BBAB00C10488 /* ManagedObjectClasses */,
 			);
@@ -222,12 +216,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				15E5E8982280B9E30017521D /* Date+Formatter.swift in Sources */,
-				15E5BB0722888D3E00F0EA7E /* CoreDataServiceInterface.swift in Sources */,
 				15E5E89C2280BB580017521D /* Note+CoreDataProperties.swift in Sources */,
 				15E5E89B2280BB580017521D /* Note+CoreDataClass.swift in Sources */,
 				15E5E89022804E110017521D /* NoteDetailViewController.swift in Sources */,
 				15E5E881228049380017521D /* EVONotes.xcdatamodeld in Sources */,
-				15E5BB0922888E8500F0EA7E /* CoreDataManager.swift in Sources */,
 				153EFD542282D73C0077CC41 /* ColorPicker.swift in Sources */,
 				159BFBFD2280BD4000D275A3 /* UILabel+CellIdentifier.swift in Sources */,
 				15E5E88E22804D5F0017521D /* NotesListTableViewController.swift in Sources */,

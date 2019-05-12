@@ -13,7 +13,6 @@ extension Date {
     func formatDate() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy HH:mm"
-        #warning("can be returned as a value")
         let dateString = dateFormatter.string(from: self)
         
         return dateString

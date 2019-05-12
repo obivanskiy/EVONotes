@@ -78,13 +78,21 @@ class NotesListTableViewController: UITableViewController {
     }
     
     //MARK: - refresh notes entity
-    #warning("no completion in method declared, refresh can take much time to refresh even when data is already apears")
     func refresh() {
         do{
             notes = try managedObjectContexs.fetch(Note.fetchRequest())
         } catch let error as NSError {
-            #warning("error is not handled here")
             print("Failed refresh \(error), \(error.userInfo)")
+        }
+    }
+    
+    private func checkStringLenght(noteText: String) -> String {
+        if noteText.count >= 100 {
+            let trimPoint = noteText.index(noteText.startIndex, offsetBy: 100)
+            let trimmedString = noteText[..<trimPoint]
+            return String(trimmedString)
+        } else {
+            return noteText
         }
     }
     
@@ -151,7 +159,8 @@ class NotesListTableViewController: UITableViewController {
         }
         let note = notes[indexPath.row]
         
-        cell.noteTextPreview.text = note.noteText
+        cell.noteTextPreview.text = checkStringLenght(noteText: note.noteText ?? "")
+        
         cell.noteDate.text = note.date?.formatDate()
         cell.layer.cornerRadius = 5
         return cell

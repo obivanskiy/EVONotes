@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NoteDetailViewController: UIViewController {
+final class NoteDetailViewController: UIViewController {
     
     var managedObjectContext: NSManagedObjectContext!
     var note: NSManagedObject!

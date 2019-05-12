@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		153EFD542282D73C0077CC41 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153EFD532282D73C0077CC41 /* ColorPicker.swift */; };
 		159BFBFD2280BD4000D275A3 /* UILabel+CellIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159BFBFC2280BD4000D275A3 /* UILabel+CellIdentifier.swift */; };
+		15E5BB0D2288AF5700F0EA7E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15E5BB0C2288AF5700F0EA7E /* Assets.xcassets */; };
 		15E5E879228049380017521D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E5E878228049380017521D /* AppDelegate.swift */; };
 		15E5E87E228049380017521D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15E5E87C228049380017521D /* Main.storyboard */; };
 		15E5E881228049380017521D /* EVONotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 15E5E87F228049380017521D /* EVONotes.xcdatamodeld */; };
-		15E5E883228049390017521D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15E5E882228049390017521D /* Assets.xcassets */; };
 		15E5E886228049390017521D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15E5E884228049390017521D /* LaunchScreen.storyboard */; };
 		15E5E88E22804D5F0017521D /* NotesListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E5E88D22804D5F0017521D /* NotesListTableViewController.swift */; };
 		15E5E89022804E110017521D /* NoteDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E5E88F22804E110017521D /* NoteDetailViewController.swift */; };
@@ -25,11 +25,11 @@
 /* Begin PBXFileReference section */
 		153EFD532282D73C0077CC41 /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
 		159BFBFC2280BD4000D275A3 /* UILabel+CellIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+CellIdentifier.swift"; sourceTree = "<group>"; };
+		15E5BB0C2288AF5700F0EA7E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../.Trash/Assets.xcassets; sourceTree = "<group>"; };
 		15E5E875228049380017521D /* EVONotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EVONotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15E5E878228049380017521D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		15E5E87D228049380017521D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		15E5E880228049380017521D /* EVONotes.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EVONotes.xcdatamodel; sourceTree = "<group>"; };
-		15E5E882228049390017521D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		15E5E885228049390017521D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		15E5E887228049390017521D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		15E5E88D22804D5F0017521D /* NotesListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesListTableViewController.swift; sourceTree = "<group>"; };
@@ -102,8 +102,8 @@
 				15E5E89122804E170017521D /* Controllers */,
 				159BFBFE2280BD4600D275A3 /* Extensions */,
 				15E5E89222804E220017521D /* CoreData */,
-				15E5E882228049390017521D /* Assets.xcassets */,
 				15E5E887228049390017521D /* Info.plist */,
+				15E5BB0C2288AF5700F0EA7E /* Assets.xcassets */,
 			);
 			path = EVONotes;
 			sourceTree = "<group>";
@@ -203,7 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				15E5E886228049390017521D /* LaunchScreen.storyboard in Resources */,
-				15E5E883228049390017521D /* Assets.xcassets in Resources */,
+				15E5BB0D2288AF5700F0EA7E /* Assets.xcassets in Resources */,
 				15E5E87E228049380017521D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

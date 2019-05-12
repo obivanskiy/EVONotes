@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NotesListTableViewController: UITableViewController {
+final class NotesListTableViewController: UITableViewController {
     
     enum SeguesToDetailController: String {
         case noteDetailSegueID = "NoteDetail"
@@ -40,77 +40,20 @@ class NotesListTableViewController: UITableViewController {
         refresh()
     }
     
-    func setUpSearchBar() {
-        noteSearchBar.delegate = self
-        noteSearchBar.backgroundColor = globalBackgroundColor
-        noteSearchBar.returnKeyType = UIReturnKeyType.done
-        noteSearchBar.placeholder = "Search for your note"
-        filteredNotes = notes
-    }
-    
-    //MARK: - Fetch notes entity
-    func fetchNotes() {
-        let notesRequest = NSFetchRequest<Note>(entityName: "Note")
-
-        do {
-            self.notes = try self.managedObjectContexs.fetch(notesRequest)
-        } catch let error as NSError {
-            print("Could not fetch notes: \(error), \(error.userInfo )")
-        }
-        
-        self.tableView.reloadData()
-    }
-    
-    //MARK: - function for fetching sorted entity using NSSortDescriptor
-    func sortNotes(for key: String?, isAccending: Bool) {
-        let notesRequest = NSFetchRequest<Note>(entityName: "Note")
-
-        
-        let descriptor = NSSortDescriptor(key: key, ascending: isAccending)
-        notesRequest.sortDescriptors = [descriptor]
-        
-        do {
-            self.notes = try self.managedObjectContexs.fetch(notesRequest)
-        } catch let error as NSError {
-            print("Could not fetch notes: \(error), \(error.userInfo )")
-        }
-        self.tableView.reloadData()
-    }
-    
-    //MARK: - refresh notes entity
-    func refresh() {
-        do{
-            notes = try managedObjectContexs.fetch(Note.fetchRequest())
-        } catch let error as NSError {
-            print("Failed refresh \(error), \(error.userInfo)")
-        }
-    }
-    
-    private func checkStringLenght(noteText: String) -> String {
-        if noteText.count >= 100 {
-            let trimPoint = noteText.index(noteText.startIndex, offsetBy: 100)
-            let trimmedString = noteText[..<trimPoint]
-            return String(trimmedString)
-        } else {
-            return noteText
-        }
-    }
-    
     @IBAction func addNotePressed(_ sender: Any) {
         performSegue(withIdentifier: SeguesToDetailController.addNoteSegueID.rawValue, sender: nil)
     }
     
     @IBAction func sortNotesPressed(_ sender: Any) {
-        #warning("shoud be refactored, method is way too big")
         let sortMenuAlert = UIAlertController(title: "Sort your notes", message: nil, preferredStyle: .actionSheet)
         
         let sortByName = UIAlertAction(title: "Sort by name", style: .default) { (_) in
             let nameSortAlert = UIAlertController(title: "Sort by name", message: nil, preferredStyle: .actionSheet)
             
-            let accending = UIAlertAction(title: "Accending", style: .default, handler: { (_) in
+            let accending = UIAlertAction(title: "From A to Z", style: .default, handler: { (_) in
                 self.sortNotes(for: "noteText", isAccending: true)
             })
-            let decending = UIAlertAction(title: "Decending", style: .default, handler: { (_) in
+            let decending = UIAlertAction(title: "From Z to A", style: .default, handler: { (_) in
                 self.sortNotes(for: "noteText", isAccending: false)
             })
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -125,10 +68,10 @@ class NotesListTableViewController: UITableViewController {
         let sortByDate = UIAlertAction(title: "Sort by date", style: .default) { (_) in
             let dateSortAlert = UIAlertController(title: "Sort by name", message: nil, preferredStyle: .actionSheet)
             
-            let accending = UIAlertAction(title: "Accending", style: .default, handler: { (_) in
+            let accending = UIAlertAction(title: "From earliest to latest", style: .default, handler: { (_) in
                 self.sortNotes(for: "date", isAccending: true)
             })
-            let decending = UIAlertAction(title: "Decending", style: .default, handler: { (_) in
+            let decending = UIAlertAction(title: "From latest to earliest", style: .default, handler: { (_) in
                 self.sortNotes(for: "date", isAccending: false)
             })
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -145,6 +88,62 @@ class NotesListTableViewController: UITableViewController {
         sortMenuAlert.addAction(sortByDate)
         sortMenuAlert.addAction(cancelAction)
         present(sortMenuAlert, animated: true, completion: nil)
+    }
+    
+    private func setUpSearchBar() {
+        noteSearchBar.delegate = self
+        noteSearchBar.backgroundColor = globalBackgroundColor
+        noteSearchBar.returnKeyType = UIReturnKeyType.done
+        noteSearchBar.placeholder = "Search for your note"
+        filteredNotes = notes
+    }
+    
+    //MARK: - Fetch notes entity
+    private func fetchNotes() {
+        let notesRequest = NSFetchRequest<Note>(entityName: "Note")
+        
+        do {
+            self.notes = try self.managedObjectContexs.fetch(notesRequest)
+        } catch let error as NSError {
+            print("Could not fetch notes: \(error), \(error.userInfo )")
+        }
+        
+        self.tableView.reloadData()
+    }
+    
+    //MARK: - function for fetching sorted entity using NSSortDescriptor
+    private func sortNotes(for key: String?, isAccending: Bool) {
+        let notesRequest = NSFetchRequest<Note>(entityName: "Note")
+        
+        
+        let descriptor = NSSortDescriptor(key: key, ascending: isAccending)
+        notesRequest.sortDescriptors = [descriptor]
+        
+        do {
+            self.notes = try self.managedObjectContexs.fetch(notesRequest)
+        } catch let error as NSError {
+            print("Could not fetch notes: \(error), \(error.userInfo )")
+        }
+        self.tableView.reloadData()
+    }
+    
+    //MARK: - refresh notes entity
+    private func refresh() {
+        do{
+            notes = try managedObjectContexs.fetch(Note.fetchRequest())
+        } catch let error as NSError {
+            print("Failed refresh \(error), \(error.userInfo)")
+        }
+    }
+    
+    private func checkStringLenght(noteText: String) -> String {
+        if noteText.count >= 100 {
+            let trimPoint = noteText.index(noteText.startIndex, offsetBy: 100)
+            let trimmedString = noteText[..<trimPoint]
+            return String(trimmedString)
+        } else {
+            return noteText
+        }
     }
     
     // MARK: - Table view data source
@@ -174,7 +173,8 @@ class NotesListTableViewController: UITableViewController {
         let editAction = UITableViewRowAction(style: .normal, title: "Edit note") { (rowAction, indexPath) in
             self.performSegue(withIdentifier: SeguesToDetailController.editNoteSegueID.rawValue, sender: note)
         }
-        editAction.backgroundColor = colorPicker.colorPicker(r: 0, g: 235, b: 239)
+        
+        editAction.backgroundColor = colorPicker.colorPicker(r: 0, g: 235, b: 245)
         
         let deleteAction = UITableViewRowAction(style: .normal, title: "Delete") { (rowAction, indexPath) in
             self.managedObjectContexs.delete(note)
@@ -182,13 +182,13 @@ class NotesListTableViewController: UITableViewController {
             
             self.tableView.reloadData()
         }
-        deleteAction.backgroundColor = colorPicker.colorPicker(r: 255, g: 76, b: 0)
+        deleteAction.backgroundColor = colorPicker.colorPicker(r: 255, g: 90, b: 0)
         
         let shareAction = UITableViewRowAction(style: .normal, title: "Share") { (rowAction, indexPath) in
             let activityController = UIActivityViewController(activityItems: [note.noteText ?? ""], applicationActivities: nil)
             self.present(activityController, animated: true, completion: nil)
         }
-        shareAction.backgroundColor = colorPicker.colorPicker(r: 0, g: 234, b: 97)
+        shareAction.backgroundColor = colorPicker.colorPicker(r: 0, g: 234, b: 100)
         
         return [deleteAction ,editAction, shareAction]
     }

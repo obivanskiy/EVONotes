@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NoteTableViewCell: UITableViewCell {
+final class NoteTableViewCell: UITableViewCell {
     
     @IBOutlet weak var noteTextPreview: UILabel!
     @IBOutlet weak var noteDate: UILabel!

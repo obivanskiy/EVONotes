@@ -94,6 +94,7 @@ final class NotesListTableViewController: UITableViewController {
     private func setUpSearchBar() {
         noteSearchBar.delegate = self
         noteSearchBar.backgroundColor = globalBackgroundColor
+        noteSearchBar.tintColor = globalTintColor
         noteSearchBar.returnKeyType = UIReturnKeyType.done
         noteSearchBar.placeholder = "Search for your note"
         filteredNotes = notes
@@ -220,10 +221,11 @@ final class NotesListTableViewController: UITableViewController {
 
 extension NotesListTableViewController: UISearchBarDelegate {
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchBar.showsCancelButton = true
-        
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let input = noteSearchBar.text else {
             return
         }
@@ -245,6 +247,7 @@ extension NotesListTableViewController: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         refresh()
+        searchBar.showsCancelButton = false
         searchBar.text = nil
         searchBar.resignFirstResponder()
         tableView.reloadData()

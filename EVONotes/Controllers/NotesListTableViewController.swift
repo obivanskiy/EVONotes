@@ -45,6 +45,7 @@ final class NotesListTableViewController: UITableViewController {
     }
     
     @IBAction func sortNotesPressed(_ sender: Any) {
+        
         let sortMenuAlert = UIAlertController(title: "Sort your notes", message: nil, preferredStyle: .actionSheet)
         
         let sortByName = UIAlertAction(title: "Sort by name", style: .default) { (_) in
@@ -137,11 +138,12 @@ final class NotesListTableViewController: UITableViewController {
     }
     
     private func checkStringLenght(noteText: String) -> String {
-        if noteText.count >= 100 {
+        switch noteText.count {
+        case noteText.count where noteText.count > 100:
             let trimPoint = noteText.index(noteText.startIndex, offsetBy: 100)
             let trimmedString = noteText[..<trimPoint]
             return String(trimmedString)
-        } else {
+        default:
             return noteText
         }
     }
